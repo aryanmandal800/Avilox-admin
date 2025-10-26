@@ -1,0 +1,358 @@
+.performanceCategory {
+    background-color: white;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.categoryPosition {
+    display: flex;
+    flex-direction: row;  
+    align-items: center;
+    justify-content: center; 
+    text-align: center;
+    margin-top: 10px;
+}
+
+.performanceCategoryParent {
+    display: flex;
+    background-color: #143B80;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 0px auto;
+    position: relative;
+    z-index: 1000;
+}
+
+.categoryPosition p {
+    color: white;
+    font-size: 18px;
+    margin-top: 5px; /* Adjust spacing between value and label */
+    font-weight: 500;
+}
+
+.WelcomeTextContainer {
+    width: 25%;
+}
+
+.WelcomeTextContainer p {
+    color: white;
+}
+
+.WelcomeTextContainer h2 {
+    color: white;
+}
+
+.moduleContainter {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.moduleContainter{
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+  
+   
+}
+.myJourneyCard{
+    border: 2px solid rgb(214, 206, 206);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ChapterImage{
+    width: 70px;
+    height: 70px;
+
+    background-color: grey;
+    border-radius: 7px;
+}
+.chapterCardImageHeader{
+    display: flex;
+    justify-content: space-between;
+
+}
+.chapterCardImageHeader p {
+    width: 80%;
+}
+.cardHeading{
+    color: #143B80;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    font-size: 25px;
+    font-weight: 700;
+}
+.cardHeader{
+    color: #414042;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+.chapterName {
+    color: #808181;
+    font-weight: 600;
+}
+.resultText{
+    color: #143B80;
+    font-weight: 700;
+    padding: 10px 0px 10px 0px;
+
+}
+
+.cardButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.restartButton, .resumeButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.restartButton {
+    background-color: #fff;
+    color: black;
+    border: 1px solid rgb(131, 123, 123);
+}
+
+.resumeButton {
+    background-color: #1877F2;
+    color: white;
+    margin-top: 10px;
+}
+
+.restartButton:hover {
+    background-color: #e04343;
+}
+
+.resumeButton:hover {
+    background-color: #86b1e8;
+}
+.modalCard{
+    border: 2px solid rgb(214, 206, 206);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 400px;
+
+}
+.modalCardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 250px; 
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  /* practice csssssssssssss */
+  .parentCard {
+    border: 2px solid rgb(109, 104, 104);
+    height: 80%;
+    width: 90%;
+    padding-bottom: 40px;
+    border-radius: 10px;
+    margin: 20px auto;
+    box-shadow: #1877F2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure items are positioned at start and end */
+    align-items: center;
+}
+
+  .insideCard{
+    background: rgb(132, 155, 217);
+
+    border-radius: 10px;
+    width: 50%;
+    height: 200px;
+    margin: 20px 20px 20px 0px;
+
+  }
+  .insideCard p {
+    font-size: 18px;
+    font-weight:600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+  }
+
+  .mainCard {
+    border: 2px solid rgb(109, 104, 104);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 70%;
+    background: rgb(137, 153, 198);
+    border-radius: 10px;
+    margin: 20px;
+    align-self: flex-end;
+  }
+  
+  .insideCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+    background: rgb(137, 153, 198);
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .bottomControls {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .prevNext {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .icon {
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .fontSizeControls {
+    display: flex;
+    gap: 10px;
+  }
+  
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background: #0056b3;
+  }
+  .counting{
+    background-color: #143B80;
+    padding: 6px 20px;
+    border-radius: 5px;
+    color: white;
+  }
+  .buttonPlay{
+    border: 1px solid grey;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.startButton{
+    background-color: #143B80;
+    height: 80px;
+    width: 80px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.buttonContainerParent{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 80%;
+    justify-content: space-between;
+    align-self: flex-start;
+}
+.buttonContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 40%;
+    justify-content: space-evenly;
+    
+}
+.iconStyle {
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.iconStyle:hover {
+    color: #0056b3;
+}
+
+.activeMic {
+    color: red !important;  /* Change mic color when active */
+}
+
+.smallIconStyle {
+    font-size: 20px;
+    color: #0056b3;
+    cursor: pointer;
+}
+
+.smallIconStyle:hover {
+    color: #192fbd;
+}
+.buttonWithLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buttonLabel {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+.disabledIcon {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.accessTypeText{
+    margin-top: 20px;
+    text-align: center;
+    color: #022c76;
+}
+
+/* -----------------subs plan css ---------------------- */
+

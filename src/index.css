@@ -1,0 +1,18 @@
+@font-face {
+  font-family: "Fredoka";
+  src: url("./assets/fonts/Fredoka-Regular.ttf");
+  src: url("./assets/fonts/Poppins-Regular.ttf");
+}
+
+* {
+  font-family:"Fredoka", "Inter", "sans-serif";
+}
+
+body {
+  background-color: #F7F8FA
+}
+
+html, body, #root {
+  height: 100%;
+  overflow-x: hidden;
+}
