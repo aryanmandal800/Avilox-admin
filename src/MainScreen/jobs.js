@@ -29,11 +29,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import styled from "@emotion/styled";
 import { jobService } from "../services/user.service";
 import NotificationModal from "../components/NotificationModal";
+import CreateJob from "../components/createJob";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [createJobModalOpen, setCreateJobModalOpen] = useState(false);
@@ -64,7 +66,8 @@ const Jobs = () => {
   const [filterAnchor, setFilterAnchor] = useState(null);
 
   useEffect(() => {
-    fetchJobs();
+    // Only show loading if we're not searching and there's no active search term
+    fetchJobs(!isSearching && searchTerm === '');
   }, [pagination.currentPage, filters]);
 
   // Reset to page 1 when search term changes
@@ -72,15 +75,19 @@ const Jobs = () => {
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   }, [searchTerm]);
 
-  // Debounce search to avoid too many API calls
+  // Debounce search to avoid too many API calls - no loading bar during search
   useEffect(() => {
     if (searchTerm === undefined || searchTerm === '') {
-      fetchJobs();
+      // When search is cleared, fetch with loading
+      setIsSearching(false);
+      fetchJobs(true);
       return;
     }
 
+    setIsSearching(true);
     const timeoutId = setTimeout(() => {
       fetchJobsSilent();
+      setIsSearching(false);
     }, 500); // 500ms debounce
 
     return () => clearTimeout(timeoutId);
@@ -108,9 +115,11 @@ const Jobs = () => {
     }
   };
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) {
+        setLoading(true);
+      }
       setError(null);
       const response = await jobService.getAllJobs(pagination.currentPage, 10, {
         search: searchTerm || undefined,
@@ -129,7 +138,9 @@ const Jobs = () => {
       setError(err.message || "Failed to fetch jobs");
       setJobs([]);
     } finally {
-      setLoading(false);
+      if (showLoading) {
+        setLoading(false);
+      }
     }
   };
 
@@ -192,6 +203,12 @@ const Jobs = () => {
         setDeleteLoading(false);
       }
     }
+  };
+
+  const handleJobCreated = async () => {
+    setCreateJobModalOpen(false);
+    await fetchJobs();
+    showNotification('success', 'Success', 'Job posting created successfully!');
   };
 
   const handleFilterChange = (field, value) => {
@@ -606,24 +623,20 @@ const Jobs = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Create Job Modal - Placeholder */}
+      {/* Create Job Modal */}
       <Dialog
         open={createJobModalOpen}
         onClose={() => setCreateJobModalOpen(false)}
-        PaperProps={{ sx: { borderRadius: "12px", minWidth: "600px" } }}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{ sx: { borderRadius: "12px" } }}
       >
-        <DialogTitle>Create New Job Posting</DialogTitle>
         <DialogContent>
-          <p>Create job form will be implemented here</p>
+          <CreateJob 
+            onClose={() => setCreateJobModalOpen(false)}
+            onSuccess={handleJobCreated}
+          />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCreateJobModalOpen(false)} variant="outlined">
-            Cancel
-          </Button>
-          <Button variant="contained">
-            Create
-          </Button>
-        </DialogActions>
       </Dialog>
 
       {/* Notification Modal */}
