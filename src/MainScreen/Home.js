@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Grid, Card, CardContent, Typography, Button, Skeleton } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
+import { jobService, userService } from '../services/user.service';
 
 // Keyframe animations
 const fadeInUp = keyframes`
@@ -272,6 +273,8 @@ const StatLabel = styled(Typography)({
 });
 
 const Home = () => {
+
+  const [totalJobs, setTotalJobs] = useState(0);
   const [stats, setStats] = useState({
     registeredUsers: 0,
     courses: 0,
@@ -300,18 +303,23 @@ const Home = () => {
     requestAnimationFrame(animate);
   };
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      const [usersData, jobsData] = await Promise.all([
+        userService.getAllUsers(1, 10),
+        jobService.getAllJobs(1, 10),
+      ]);
+      const fetchedTotalUsers = usersData?.totalUsers ?? 0;
+      const fetchedTotalJobs = jobsData?.totalJobs ?? 0;
+      setTotalJobs(fetchedTotalJobs);
       const newStats = {
-        registeredUsers: Math.floor(Math.random() * 100),
+        registeredUsers: fetchedTotalUsers,
         courses: Math.floor(Math.random() * 50),
-        jobs: Math.floor(Math.random() * 30),
+        jobs: fetchedTotalJobs,
         supportQueries: Math.floor(Math.random() * 20),
       };
       setStats(newStats);
-      
-      // Animate each number
       Object.keys(newStats).forEach((key, index) => {
         setTimeout(() => {
           animateNumber(animatedStats[key], newStats[key], 1000, (value) => {
@@ -319,13 +327,26 @@ const Home = () => {
           });
         }, index * 200);
       });
-      
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
+  };
+
+  const fetchJobs = async (showLoading = true) => {
+    try {
+      const response = await jobService.getAllJobs();
+      setTotalJobs(response.totalJobs ?? 0);
+      console.log('Total jobs:', response.totalJobs ?? 0);
+    } catch (err) {
+      console.error("Failed to fetch jobs:", err);
+    }
   };
 
   useEffect(() => {
     handleRefresh();
+  }, []);
+  useEffect(() => {
+    fetchJobs();
   }, []);
 
   const dashboardCards = [

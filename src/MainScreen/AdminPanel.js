@@ -1,17 +1,18 @@
 import React from "react";
 import NavTemplate from "../components/NavTemplate.js";
 import PageBody from "../components/PageBody.js";
-import SupportQuery from "./SupportQuery.js";
+
+import AdminPanelLayout from "./AdminPanelLayout.js";
 
 
-const SupportReq = () => {
+const AdminPanel = () => {
  
   return (
     <>
    
-      <NavTemplate tab={"Support"}>
+      <NavTemplate tab={"Admin Panel"}>
       <PageBody>
-        <SupportQuery/>
+      <AdminPanelLayout/>
       </PageBody>
       </NavTemplate>
     
@@ -19,5 +20,5 @@ const SupportReq = () => {
   );
 };
 
-export default SupportReq;
+export default AdminPanel;
 

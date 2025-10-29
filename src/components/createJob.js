@@ -12,6 +12,11 @@ import {
   InputAdornment,
   IconButton,
   Alert,
+  Divider,
+  Paper,
+  Stack,
+  CircularProgress,
+  Avatar,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { jobService } from "../services/user.service";
@@ -164,10 +169,22 @@ const CreateJob = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <Box>
-      <Typography variant="h6" sx={{ mb: 2, color: "#20c997" }}>
-        Create New Job Posting
-      </Typography>
+    <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+      <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+        {form.image ? (
+          <Avatar src={form.image} alt={form.companyName || "Company Logo"} sx={{ width: 40, height: 40 }} />
+        ) : (
+          <Avatar sx={{ width: 40, height: 40 }} />
+        )}
+        <Box>
+          <Typography variant="h6" sx={{ color: "primary.main", fontWeight: 700 }}>
+            Create New Job Posting
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Fill out the details below to add a new opening
+          </Typography>
+        </Box>
+      </Stack>
 
       {error && (
         <Alert severity="error" onClose={() => setError(null)} sx={{ mb: 2 }}>
@@ -176,7 +193,13 @@ const CreateJob = ({ onClose, onSuccess }) => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+        <Divider sx={{ mb: 2 }} />
+        <Box sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}>
           <TextField
             label="Company Name"
             name="companyName"
@@ -194,7 +217,12 @@ const CreateJob = ({ onClose, onSuccess }) => {
           />
         </Box>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+        <Box sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}>
           <TextField
             label="Location"
             name="location"
@@ -213,7 +241,12 @@ const CreateJob = ({ onClose, onSuccess }) => {
           />
         </Box>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, mb: 2 }}>
+        <Box sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}>
           <FormControl fullWidth>
             <InputLabel>Job Type (Work Location)</InputLabel>
             <Select
@@ -256,7 +289,12 @@ const CreateJob = ({ onClose, onSuccess }) => {
           </FormControl>
         </Box>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+        <Box sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}>
           <TextField
             label="Working Days"
             name="workingDays"
@@ -276,7 +314,12 @@ const CreateJob = ({ onClose, onSuccess }) => {
           />
         </Box>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, mb: 2 }}>
+        <Box sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+          gap: 2,
+          mb: 2,
+        }}>
           <TextField
             label="CTC (LPA)"
             name="ctc"
@@ -298,14 +341,6 @@ const CreateJob = ({ onClose, onSuccess }) => {
             InputProps={{
               endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
             }}
-          />
-          <TextField
-            label="Notice Period"
-            name="noticePeriod"
-            value={form.noticePeriod}
-            onChange={handleChange}
-            fullWidth
-            placeholder="e.g. 2 weeks"
           />
         </Box>
 
@@ -425,16 +460,17 @@ const CreateJob = ({ onClose, onSuccess }) => {
           />
         </Box>
 
+        <Divider sx={{ mt: 2, mb: 2 }} />
         <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
           <Button onClick={onClose} variant="outlined" disabled={loading}>
             Cancel
           </Button>
           <Button type="submit" variant="contained" disabled={loading}>
-            {loading ? "Creating..." : "Create Job"}
+            {loading ? <CircularProgress size={20} sx={{ color: "common.white" }} /> : "Create Job"}
           </Button>
         </Box>
       </form>
-    </Box>
+    </Paper>
   );
 };
 

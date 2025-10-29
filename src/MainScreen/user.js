@@ -25,8 +25,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "@emotion/styled";
 import userService from "../services/user.service";
 import NotificationModal from "../components/NotificationModal";
+import { useStats } from "../store/StatsContext";
 
 const User = () => {
+  const { setTotalUsers } = useStats();
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("Newest");
@@ -75,11 +77,22 @@ const User = () => {
       if (response.pagination) {
         setPagination(response.pagination);
       }
+
+      // Update global totalUsers directly from API response
+      const total =
+        (response && (
+          (response.pagination && (response.pagination.totalCount ?? response.pagination.total)) ??
+          response.totalUsers ??
+          response.total ??
+          (Array.isArray(response.users) ? response.users.length : undefined)
+        )) || 0;
+      setTotalUsers(Number(total) || 0);
     } catch (err) {
       console.error("Failed to fetch users:", err);
       setError(err.message || "Failed to fetch users");
       // Fallback to empty array on error
       setUsers([]);
+      setTotalUsers(0);
     } finally {
       setLoading(false);
     }

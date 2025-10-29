@@ -6,7 +6,9 @@ export const userService = {
       const response = await api.get('/admin/users', {
         params: { page, limit }
       });
-      return response.data;
+      const data = response.data || {};
+      const totalUsers = data.totalUsers ?? data.pagination?.totalCount ?? 0;
+      return { ...data, totalUsers };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch users');
     }
@@ -81,7 +83,9 @@ export const jobService = {
       const response = await api.get('/job/postings', {
         params: { page, limit, ...filters }
       });
-      return response.data;
+      const data = response.data || {};
+      const totalJobs = response.data.data.count;
+      return { ...data, totalJobs };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch jobs');
     }

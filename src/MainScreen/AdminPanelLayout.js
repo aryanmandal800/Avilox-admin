@@ -9,13 +9,13 @@ const containerStyle = {
 
 
 
-const SupportQuery = () => {
+const AdminPanelLayout = () => {
 
   return (
     <div style={containerStyle}>
-  <h2>Support</h2>
+  <h2>Coming soon</h2>
     </div>
   );
 }
 
-export default SupportQuery;
+export default AdminPanelLayout;

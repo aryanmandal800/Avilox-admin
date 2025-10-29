@@ -46,7 +46,7 @@ const NavBar = ({ navOptions, currentTab }) => {
               >
                 <StyledTypoBox>
                   <StyledContentBox>
-                    <Image src={data.icon} alt={"GreenSip-logo"} />
+                    <Image src={data.icon} alt={"GreenSip-logo"} width={24} height={24} style={{ objectFit: 'contain' }} />
                     <StyledTypography className="nav-text" text={data.label} selected={isSelected} />
                   </StyledContentBox>
                 </StyledTypoBox>

@@ -2,12 +2,12 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../Auth/LoginPage";
 import UserProfile from "../components/userProfile";
-import SupportReq from "../MainScreen/SupportReq";
 import HomePage from "../MainScreen/HomePage";
 import RedemptionHistoryPage from "../MainScreen/RedemptionHistoryPage";
 import UserLayout from "../MainScreen/userLayout";
 import JobLayout from "../MainScreen/jobsLayout";
 import CourseLayout from "../MainScreen/courseLayout";
+import AdminPanel from "../MainScreen/AdminPanel";
 
 export default function AppRoutes() {
 
@@ -22,7 +22,7 @@ export default function AppRoutes() {
 
       <Route path="/redemption-history" element={<RedemptionHistoryPage />}/>
 
-      <Route path="/support" element={<SupportReq />}/>
+      <Route path="/admin-panel" element={<AdminPanel />}/>
 
       <Route path="/profile" element={<UserProfile />}/>
 

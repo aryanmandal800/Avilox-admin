@@ -29,9 +29,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import styled from "@emotion/styled";
 import { jobService } from "../services/user.service";
 import NotificationModal from "../components/NotificationModal";
+import { useStats } from "../store/StatsContext";
 import CreateJob from "../components/createJob";
 
 const Jobs = () => {
+  const { setTotalJobs } = useStats();
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -75,6 +77,8 @@ const Jobs = () => {
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   }, [searchTerm]);
 
+  // Keep global count updated from API responses in fetch functions below
+
   // Debounce search to avoid too many API calls - no loading bar during search
   useEffect(() => {
     if (searchTerm === undefined || searchTerm === '') {
@@ -108,10 +112,21 @@ const Jobs = () => {
       if (response.data?.pagination) {
         setPagination(response.data.pagination);
       }
+
+      // Update global totalJobs directly from API response
+      const total =
+        (response && (
+          (response.data?.pagination && (response.data.pagination.total ?? response.data.pagination.totalCount)) ??
+          response.data?.total ??
+          response.total ??
+          (Array.isArray(response.data?.jobPostings) ? response.data.jobPostings.length : undefined)
+        )) || 0;
+      setTotalJobs(Number(total) || 0);
     } catch (err) {
       console.error("Failed to fetch jobs:", err);
       setError(err.message || "Failed to fetch jobs");
       setJobs([]);
+      setTotalJobs(0);
     }
   };
 
@@ -133,10 +148,21 @@ const Jobs = () => {
       if (response.data?.pagination) {
         setPagination(response.data.pagination);
       }
+
+      // Update global totalJobs directly from API response
+      const total =
+        (response && (
+          (response.data?.pagination && (response.data.pagination.total ?? response.data.pagination.totalCount)) ??
+          response.data?.total ??
+          response.total ??
+          (Array.isArray(response.data?.jobPostings) ? response.data.jobPostings.length : undefined)
+        )) || 0;
+      setTotalJobs(Number(total) || 0);
     } catch (err) {
       console.error("Failed to fetch jobs:", err);
       setError(err.message || "Failed to fetch jobs");
       setJobs([]);
+      setTotalJobs(0);
     } finally {
       if (showLoading) {
         setLoading(false);

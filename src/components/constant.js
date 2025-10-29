@@ -2,6 +2,8 @@ import NavDashboardIcon from "../assets/image/nav_dashboard.svg";
 import NavServiceProviderIcon from "../assets/image/nav_serviceProviderIcon.svg";
 import NavOrdersIcon from "../assets/image/ordersNavIcon.svg";
 import SupportIcon from "../assets/image/help_support.svg";
+import profileIcon from "../assets/image/profileIcon.svg";
+import jobIcon from "../assets/image/job-svgrepo-com1.svg"
 
 
 export const navBarCoordinationOptions = [
@@ -17,7 +19,7 @@ export const navBarCoordinationOptions = [
 
 
   {
-    icon: NavOrdersIcon,
+    icon: jobIcon,
     label: "Jobs",
   },
   {
@@ -25,8 +27,8 @@ export const navBarCoordinationOptions = [
     label: "Courses",
   },
   {
-    icon: NavOrdersIcon,
-    label: "Support",
+    icon: profileIcon,
+    label: "Admin Panel",
   },
   {
     icon: SupportIcon,

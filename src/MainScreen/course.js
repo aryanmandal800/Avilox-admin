@@ -12,7 +12,7 @@ const Course = () => {
   return (
     <>
     <div style={containerStyle}>
-    <h1>Course</h1>
+    <h2>Coming Soon</h2>
     </div>
     </>
   );
