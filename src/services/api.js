@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://51.20.192.232:9000/api';
+const API_BASE_URL = 'https://backend.avilox.in/api';
 
 // Create axios instance with default config
 const api = axios.create({
