@@ -115,6 +115,12 @@ const StyledTypography = styled(CustomeTypography)(({ selected }) => ({
   fontSize: "16px",
   color: selected ? "black" : "black",
   fontWeight: "bold",
+  "@media (max-width: 1200px)": {
+    fontSize: "13px",
+  },
+  "@media (max-width: 600px)": {
+    fontSize: "14px",
+  },
 }));
 
 export default NavBar;

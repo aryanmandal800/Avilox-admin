@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { navBarCoordinationOptions } from "./constant";
 import NavHeader from "./NavHeader";
 import NavBar from "./NavBar";
+ 
 
 const NavTemplate = ({ children, showHeader = true, tab }) => {
   const [isNavVisible, setIsNavVisible] = useState(false);
@@ -22,7 +23,7 @@ const NavTemplate = ({ children, showHeader = true, tab }) => {
     };
   }, []);
 
-  const isMobile = screenWidth <= 1250;
+  const isMobile = screenWidth <= 950;
   const toggleNav = () => {
     setIsNavVisible(!isNavVisible);
   };
@@ -57,8 +58,21 @@ const NavTemplate = ({ children, showHeader = true, tab }) => {
           onClose={toggleNav}
           variant={isMobile ? "temporary" : "permanent"}
           style={{ zIndex: 1000 }}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: { xs: 20, sm: 40, md: 60, lg: 78 },
+              top: { xs: 96, md: 82, lg: 12 },
+              height: {
+                xs: 'calc(100% - 96px)',
+                md: 'calc(100% - 82px)',
+                lg: 'calc(100% - 82px)'
+              }
+            },
+          }}
         >
-          <LeftNavContainer isVisible={isMobile ? isNavVisible : true}>
+          <LeftNavContainer>
             <NavBar currentTab={tab} navOptions={navBarCoordinationOptions} />
           </LeftNavContainer>
         </Drawer>
@@ -80,29 +94,24 @@ const MainContainer = styled(Box)({
   backgroundColor: "white",
 });
 
-const LeftNavContainer = styled(Box)(({ isVisible }) => ({
-  width: isVisible ? "20%" : "0",
-  transition: "width 0.3s ease-in-out",
-  overflow: "hidden",
-  backgroundColor: "white",
-  zIndex: 1000,
-  "@media (max-width: 1180px)": {
-    display: "block",
-    position: "fixed",
-    width: "250px",
-  },
-}));
+const LeftNavContainer = styled(Box)({
+  width: '100%',
+  height: '100%',
+  overflow: 'hidden',
+  backgroundColor: 'white',
+});
 
 const BodyContainer = styled(Box)({
   flex: 1,
   overflow: "auto",
   padding: "16px 16px 0px 16px",
-  marginLeft: "20%",
+  marginLeft: 0,
   minHeight: 0,
-  "@media (max-width: 1250px)": {
-    marginLeft: "0",
-    height: "auto",
-    minHeight: 0,
+  "@media (min-width: 900px)": {
+    marginLeft: "260px",
+  },
+  "@media (min-width: 1200px)": {
+    marginLeft: "278px",
   },
 });
 

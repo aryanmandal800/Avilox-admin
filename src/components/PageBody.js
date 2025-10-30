@@ -26,7 +26,7 @@ const StyledMainBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   padding: "0% 0% 2% 0%",
-  marginTop: "20px",
+  marginTop: "0px",
   marginRight: "10px",
   borderTopLeftRadius: "22px",
   borderTopRightRadius: "22px",
