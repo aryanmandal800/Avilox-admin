@@ -145,8 +145,8 @@ const CreateJob = ({ onClose, onSuccess }) => {
       // Optional fields - only add if they have values
       if (form.companyName) dataToSend.companyName = form.companyName;
       if (form.image) dataToSend.image = form.image;
-      if (form.ctc) dataToSend.ctc = parseFloat(form.ctc);
-      if (form.eCTC) dataToSend.eCTC = parseFloat(form.eCTC);
+      if (form.ctc) dataToSend.ctc = form.ctc;
+      if (form.eCTC) dataToSend.eCTC = form.eCTC;
       if (form.noticePeriod) dataToSend.noticePeriod = parseInt(form.noticePeriod);
       if (form.workingDays) dataToSend.workingDays = form.workingDays;
       if (form.jobType) dataToSend.jobType = form.jobType;
@@ -321,27 +321,18 @@ const CreateJob = ({ onClose, onSuccess }) => {
           mb: 2,
         }}>
           <TextField
-            label="CTC (LPA)"
+            label="CTC "
             name="ctc"
             value={form.ctc}
             onChange={handleChange}
             fullWidth
-            type="number"
-            InputProps={{
-              endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
-            }}
+           
+            // InputProps={{
+            //   endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
+            // }}
+            placeholder="e.g., 15000 per month"
           />
-          <TextField
-            label="Expected CTC (LPA)"
-            name="eCTC"
-            value={form.eCTC}
-            onChange={handleChange}
-            fullWidth
-            type="number"
-            InputProps={{
-              endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
-            }}
-          />
+      
         </Box>
 
         <TextField

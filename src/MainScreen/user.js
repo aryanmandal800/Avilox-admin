@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PrintIcon from "@mui/icons-material/Print";
 import styled from "@emotion/styled";
 import userService from "../services/user.service";
 import NotificationModal from "../components/NotificationModal";
@@ -48,6 +49,8 @@ const User = () => {
     totalPages: 1,
     totalCount: 0,
   });
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [exportCount, setExportCount] = useState(50);
 
   // Fetch users from API
   useEffect(() => {
@@ -78,7 +81,7 @@ const User = () => {
         setPagination(response.pagination);
       }
 
-      // Update global totalUsers directly from API response
+     
       const total =
         (response && (
           (response.pagination && (response.pagination.totalCount ?? response.pagination.total)) ??
@@ -90,7 +93,7 @@ const User = () => {
     } catch (err) {
       console.error("Failed to fetch users:", err);
       setError(err.message || "Failed to fetch users");
-      // Fallback to empty array on error
+    
       setUsers([]);
       setTotalUsers(0);
     } finally {
@@ -163,6 +166,80 @@ const User = () => {
     });
   };
 
+  const handlePrintExport = () => {
+    const total = pagination.totalCount || users.length || 1;
+    setExportCount(Math.min(exportCount || total, total));
+    setExportDialogOpen(true);
+  };
+
+  const handleConfirmExport = async () => {
+    try {
+      const total = pagination.totalCount || users.length || 0;
+      const desired = Math.max(1, Math.min(Number(exportCount) || 1, total || 1));
+      const res = await userService.getAllUsers(1, desired);
+      const list = res.users || [];
+      const rows = list
+        .map((u, idx) => {
+          const name = `${u.firstName || ''} ${u.lastName || ''}`.trim();
+          const email = u.email || '';
+          const created = formatDate(u.createdAt);
+          return `<tr>
+            <td style="padding:8px;border:1px solid #e5e7eb;">${idx + 1}</td>
+            <td style="padding:8px;border:1px solid #e5e7eb;">${name}</td>
+            <td style="padding:8px;border:1px solid #e5e7eb;">${email}</td>
+            <td style="padding:8px;border:1px solid #e5e7eb;">${created}</td>
+          </tr>`;
+        })
+        .join("");
+      const title = `Users Export (${desired})`;
+      const html = `<!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>${title}</title>
+            <style>
+              body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; color:#111827; }
+              h1 { font-size:20px; margin:0 0 12px 0; }
+              .meta { color:#6b7280; font-size:12px; margin-bottom:12px; }
+              table { border-collapse: collapse; width: 100%; }
+              thead th { text-align:left; background:#f3f4f6; border:1px solid #e5e7eb; padding:8px; }
+              tbody td { border:1px solid #e5e7eb; padding:8px; }
+              @media print { @page { margin: 16mm; } }
+            </style>
+          </head>
+          <body>
+            <h1>${title}</h1>
+            <div class="meta">Generated on ${new Date().toLocaleString()}</div>
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:60px;">ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Joined at</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+            <script>window.onload = function(){ window.print(); };</script>
+          </body>
+        </html>`;
+      const win = window.open("", "_blank");
+      if (win) {
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+        win.focus();
+      }
+      setExportDialogOpen(false);
+    } catch (e) {
+      showNotification('error', 'Export failed', e.message || 'Could not export users');
+    }
+  };
+
   const handlePageChange = (newPage) => {
     setPagination((prev) => ({ ...prev, currentPage: newPage }));
   };
@@ -200,14 +277,22 @@ const User = () => {
         <HeaderSection>
           <Title>Users ({searchTerm ? filteredUsers.length : pagination.totalCount})</Title>
           <ControlSection>
-            <StyledSelect
+            <Button
+              variant="contained"
+              startIcon={<PrintIcon />}
+              onClick={handlePrintExport}
+              sx={{ backgroundColor: '#20c997', '&:hover': { backgroundColor: '#1ba588' } }}
+            >
+              Print
+            </Button>
+            {/* <StyledSelect
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
               displayEmpty
             >
               <MenuItem value="Newest">Newest</MenuItem>
               <MenuItem value="Oldest">Oldest</MenuItem>
-            </StyledSelect>
+            </StyledSelect> */}
 
             <SearchField
               placeholder="Search by name, email, o..."
@@ -347,6 +432,34 @@ const User = () => {
           >
             {deleteLoading ? <CircularProgress size={20} /> : 'Delete'}
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Export Count Modal */}
+      <Dialog
+        open={exportDialogOpen}
+        onClose={() => setExportDialogOpen(false)}
+        PaperProps={{ sx: { borderRadius: '12px', minWidth: 360 } }}
+      >
+        <DialogTitle>Export Users</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mt: 1 }}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Number of users"
+              type="number"
+              fullWidth
+              value={exportCount}
+              onChange={(e) => setExportCount(e.target.value)}
+              inputProps={{ min: 1, max: Math.max(1, pagination.totalCount || users.length || 1) }}
+              helperText={`Max: ${pagination.totalCount || users.length || 1}`}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setExportDialogOpen(false)} variant="outlined">Cancel</Button>
+          <Button onClick={handleConfirmExport} variant="contained">Export</Button>
         </DialogActions>
       </Dialog>
 

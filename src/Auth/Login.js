@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -68,7 +69,7 @@ const Login = () => {
           <div style={styles.inputWrapper}>
             <span style={styles.inputIcon}>🔒</span>
             <input 
-              type="password" 
+              type={showPassword ? "text" : "password"}
               placeholder="Enter Password" 
               style={styles.inputField}
               value={password}
@@ -80,6 +81,15 @@ const Login = () => {
                 }
               }}
             />
+            <span
+              role="button"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              title={showPassword ? "Hide password" : "Show password"}
+              style={styles.toggleIcon}
+              onClick={() => setShowPassword((v) => !v)}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </span>
           </div>
           {error && (
             <div style={styles.errorMessage}>
@@ -165,6 +175,13 @@ const styles = {
     background: "transparent",
     transition: "box-shadow 0.2s, border 0.2s"
   },
+  toggleIcon: {
+    fontSize: "1.05rem",
+    color: "#64748b",
+    marginLeft: "8px",
+    cursor: "pointer",
+    userSelect: "none"
+  },
   button: {
     width: "100%",
     padding: "13px",
@@ -194,4 +211,5 @@ const styles = {
 };
 
 export default Login;
+
 

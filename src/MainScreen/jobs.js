@@ -20,6 +20,11 @@ import {
   Alert,
   Menu,
   Typography,
+  Avatar,
+  Chip,
+  Divider,
+  Stack,
+  Grid,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -393,7 +398,7 @@ const Jobs = () => {
                     <TableCell>{job.jobName}</TableCell>
                     <TableCell>{job.location}</TableCell>
                     <TableCell>{job.jobType}</TableCell>
-                    <TableCell>{job.ctc ? `₹${job.ctc} LPA` : '-'}</TableCell>
+                    <TableCell>{job.ctc ? `₹${job.ctc}` : '-'}</TableCell>
                     <TableCell>{formatDate(job.createdAt)}</TableCell>
                     <TableCell>
                       <ActionButtons>
@@ -497,146 +502,146 @@ const Jobs = () => {
       <Dialog
         open={viewJobModalOpen}
         onClose={() => setViewJobModalOpen(false)}
-        PaperProps={{ sx: { borderRadius: "12px", minWidth: "700px", maxWidth: "900px" } }}
+        PaperProps={{ sx: { borderRadius: "14px", minWidth: "780px", maxWidth: "980px", overflow: 'hidden' } }}
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>Job Details</span>
-          {jobDetails?.companyLogo && (
-            <img 
-              src={jobDetails.companyLogo} 
-              alt="Company Logo" 
-              style={{
-                maxWidth: '60px',
-                maxHeight: '60px',
-                objectFit: 'contain',
-                marginLeft: '16px',
-                borderRadius: '4px',
-              }}
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
-          )}
+        <DialogTitle sx={{ p: 0 }}>
+          <ModalHeader>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Avatar
+                src={jobDetails?.image || jobDetails?.companyLogo}
+                alt={jobDetails?.companyName || 'Company'}
+                sx={{ width: 56, height: 56, border: '1px solid #eaeaea', bgcolor: '#f5f5f5' }}
+              />
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
+                  {jobDetails?.jobName || 'Job Details'}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                  {jobDetails?.companyName || 'Company'}
+                </Typography>
+              </Box>
+            </Stack>
+            <BadgeRow>
+              {jobDetails?.location && <Chip size="small" label={jobDetails.location} />}
+              {jobDetails?.jobType && <Chip size="small" label={jobDetails.jobType} />}
+              {jobDetails?.experienceLevel && <Chip size="small" label={jobDetails.experienceLevel} />}
+            </BadgeRow>
+          </ModalHeader>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers sx={{ backgroundColor: '#fafafa' }}>
           {loadingJobDetails ? (
             <Box display="flex" justifyContent="center" py={4}>
               <CircularProgress />
             </Box>
           ) : jobDetails ? (
             <Box>
-              {/* Company Logo Section */}
-              {jobDetails.companyLogo && (
-                <Box display="flex" justifyContent="center" mb={3} mt={2}>
-                  <img 
-                    src={jobDetails.companyLogo} 
-                    alt="Company Logo" 
-                    style={{
-                      maxWidth: '200px',
-                      maxHeight: '200px',
-                      objectFit: 'contain',
-                      borderRadius: '8px',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                      border: '1px solid #e0e0e0',
-                      padding: '8px',
-                    }}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                </Box>
-              )}
-              
-              {jobDetails.companyName && (
-                <DetailSection>
-                  <DetailLabel>Company Name:</DetailLabel>
-                  <DetailValue style={{ fontSize: '1.25rem', fontWeight: 600 }}>
-                    {jobDetails.companyName}
-                  </DetailValue>
-                </DetailSection>
-              )}
-              
-              <DetailSection>
-                <DetailLabel>Job Name:</DetailLabel>
-                <DetailValue>{jobDetails.jobName}</DetailValue>
-              </DetailSection>
-              
-              <DetailSection>
-                <DetailLabel>Location:</DetailLabel>
-                <DetailValue>{jobDetails.location}</DetailValue>
-              </DetailSection>
-              
-              <DetailSection>
-                <DetailLabel>Job Type:</DetailLabel>
-                <DetailValue>{jobDetails.jobType}</DetailValue>
-              </DetailSection>
-              
-              <DetailSection>
-                <DetailLabel>Experience Level:</DetailLabel>
-                <DetailValue>{jobDetails.experienceLevel || 'N/A'}</DetailValue>
-              </DetailSection>
-              
-              <DetailSection>
-                <DetailLabel>CTC:</DetailLabel>
-                <DetailValue>{jobDetails.ctc ? `₹${jobDetails.ctc} LPA` : 'Not disclosed'}</DetailValue>
-              </DetailSection>
-              
-              {jobDetails.description && (
-                <DetailSection>
-                  <DetailLabel>Description:</DetailLabel>
-                  <DetailValue style={{ whiteSpace: 'pre-wrap' }}>{jobDetails.description}</DetailValue>
-                </DetailSection>
-              )}
-              
-              {jobDetails.requirements && (
-                <DetailSection>
-                  <DetailLabel>Requirements:</DetailLabel>
-                  <DetailValue>
-                    {Array.isArray(jobDetails.requirements) 
-                      ? jobDetails.requirements.map((req, idx) => <div key={idx}>• {req}</div>)
-                      : jobDetails.requirements.split('\n').map((req, idx) => <div key={idx}>• {req}</div>)
-                    }
-                  </DetailValue>
-                </DetailSection>
-              )}
-              
-              {jobDetails.responsibilities && (
-                <DetailSection>
-                  <DetailLabel>Responsibilities:</DetailLabel>
-                  <DetailValue>
-                    {Array.isArray(jobDetails.responsibilities)
-                      ? jobDetails.responsibilities.map((resp, idx) => <div key={idx}>• {resp}</div>)
-                      : jobDetails.responsibilities.split('\n').map((resp, idx) => <div key={idx}>• {resp}</div>)
-                    }
-                  </DetailValue>
-                </DetailSection>
-              )}
-              
-              {jobDetails.skills && (
-                <DetailSection>
-                  <DetailLabel>Skills Required:</DetailLabel>
-                  <DetailValue>
-                    {Array.isArray(jobDetails.skills)
-                      ? jobDetails.skills.join(', ')
-                      : jobDetails.skills
-                    }
-                  </DetailValue>
-                </DetailSection>
-              )}
-              
-              <DetailSection>
-                <DetailLabel>Created At:</DetailLabel>
-                <DetailValue>{formatDate(jobDetails.createdAt)}</DetailValue>
-              </DetailSection>
-              
-              {jobDetails.updatedAt && (
-                <DetailSection>
-                  <DetailLabel>Updated At:</DetailLabel>
-                  <DetailValue>{formatDate(jobDetails.updatedAt)}</DetailValue>
-                </DetailSection>
-              )}
+              <SectionCard>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12} md={8}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 0.5 }}>
+                      {jobDetails.jobName}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                      {jobDetails.companyName || 'Company'}
+                    </Typography>
+                    <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                      {jobDetails.location && <Chip size="small" label={jobDetails.location} />}
+                      {jobDetails.jobType && <Chip size="small" label={jobDetails.jobType} />}
+                      {jobDetails.experienceLevel && <Chip size="small" label={jobDetails.experienceLevel} />}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={4}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'flex-start', md: 'flex-end' }, gap: 1 }}>
+                      <Pill>
+                        {jobDetails.ctc ? `₹${jobDetails.ctc}` : 'CTC: Not disclosed'}
+                      </Pill>
+                      <Typography variant="caption" sx={{ color: '#6b7280' }}>
+                        Posted on {formatDate(jobDetails.createdAt)}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </SectionCard>
+
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid item xs={12} md={7}>
+                  {jobDetails.description && (
+                    <SectionCard>
+                      <SectionTitle>Description</SectionTitle>
+                      <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', color: '#374151' }}>
+                        {jobDetails.description}
+                      </Typography>
+                    </SectionCard>
+                  )}
+
+                  {jobDetails.requirements && (
+                    <SectionCard>
+                      <SectionTitle>Requirements</SectionTitle>
+                      <ChipList>
+                        {(Array.isArray(jobDetails.requirements) ? jobDetails.requirements : jobDetails.requirements.split('\n'))
+                          .filter(Boolean)
+                          .map((req, idx) => (
+                            <Chip key={idx} label={req} size="small" />
+                          ))}
+                      </ChipList>
+                    </SectionCard>
+                  )}
+
+                  {jobDetails.responsibilities && (
+                    <SectionCard>
+                      <SectionTitle>Responsibilities</SectionTitle>
+                      <ChipList>
+                        {(Array.isArray(jobDetails.responsibilities) ? jobDetails.responsibilities : jobDetails.responsibilities.split('\n'))
+                          .filter(Boolean)
+                          .map((resp, idx) => (
+                            <Chip key={idx} label={resp} size="small" color="default" />
+                          ))}
+                      </ChipList>
+                    </SectionCard>
+                  )}
+                </Grid>
+
+                <Grid item xs={12} md={5}>
+                  <SectionCard>
+                    <SectionTitle>Summary</SectionTitle>
+                    <MetaRow>
+                      <MetaItem>
+                        <MetaLabel>Location</MetaLabel>
+                        <MetaValue>{jobDetails.location || '—'}</MetaValue>
+                      </MetaItem>
+                      <MetaItem>
+                        <MetaLabel>Job Type</MetaLabel>
+                        <MetaValue>{jobDetails.jobType || '—'}</MetaValue>
+                      </MetaItem>
+                      <MetaItem>
+                        <MetaLabel>Experience</MetaLabel>
+                        <MetaValue>{jobDetails.experienceLevel || '—'}</MetaValue>
+                      </MetaItem>
+                      <MetaItem>
+                        <MetaLabel>CTC</MetaLabel>
+                        <MetaValue>{jobDetails.ctc ? `₹${jobDetails.ctc}` : 'Not disclosed'}</MetaValue>
+                      </MetaItem>
+                      <MetaItem>
+                        <MetaLabel>Posted</MetaLabel>
+                        <MetaValue>{formatDate(jobDetails.createdAt)}</MetaValue>
+                      </MetaItem>
+                    </MetaRow>
+                  </SectionCard>
+
+                  {(jobDetails.skills && (Array.isArray(jobDetails.skills) ? jobDetails.skills.length : String(jobDetails.skills).length)) ? (
+                    <SectionCard>
+                      <SectionTitle>Skills</SectionTitle>
+                      <ChipList>
+                        {(Array.isArray(jobDetails.skills) ? jobDetails.skills : String(jobDetails.skills).split(',')).map((skill, idx) => (
+                          <Chip key={idx} label={skill.trim()} size="small" color="primary" variant="outlined" />
+                        ))}
+                      </ChipList>
+                    </SectionCard>
+                  ) : null}
+                </Grid>
+              </Grid>
             </Box>
           ) : (
             <Typography>No details available</Typography>
@@ -809,4 +814,74 @@ const DetailValue = styled("div")({
   fontSize: "1rem",
   color: "#333",
   lineHeight: "1.6",
+});
+
+const ModalHeader = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '16px 20px',
+  background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
+  borderBottom: '1px solid #eef2f7',
+});
+
+const BadgeRow = styled(Box)({
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+});
+
+const SectionCard = styled(Box)({
+  backgroundColor: '#ffffff',
+  border: '1px solid #eef2f7',
+  boxShadow: '0 1px 2px rgba(16, 24, 40, 0.04)',
+  borderRadius: '12px',
+  padding: '16px',
+});
+
+const SectionTitle = styled(Typography)({
+  fontSize: '0.9rem',
+  fontWeight: 700,
+  color: '#111827',
+  marginBottom: '8px',
+});
+
+const Pill = styled('div')({
+  backgroundColor: '#ecfdf5',
+  color: '#047857',
+  border: '1px solid #a7f3d0',
+  borderRadius: '9999px',
+  padding: '6px 12px',
+  fontSize: '0.85rem',
+  fontWeight: 700,
+});
+
+const MetaRow = styled(Box)({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '12px',
+});
+
+const MetaItem = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 2,
+});
+
+const MetaLabel = styled('div')({
+  fontSize: '0.75rem',
+  color: '#6b7280',
+  fontWeight: 600,
+});
+
+const MetaValue = styled('div')({
+  fontSize: '0.95rem',
+  color: '#111827',
+  fontWeight: 600,
+});
+
+const ChipList = styled(Box)({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
 });
